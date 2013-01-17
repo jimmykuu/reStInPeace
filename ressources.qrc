@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/new/prefix1" >
+        <file>icones/APropos.svg</file>
+        <file>icones/ConversionDialog.svg</file>
+        <file>icones/Enregistrer.svg</file>
+        <file>icones/Enregistrer_Sous.svg</file>
+        <file>icones/Help.svg</file>
+        <file>icones/Navigateur.svg</file>
+        <file>icones/Nouveau.svg</file>
+        <file>icones/Ouvrir.svg</file>
+        <file>icones/Quitter.svg</file>
+        <file>icones/SaveAs.svg</file>
+        <file>icones/Settings.svg</file>
+        <file>icones/crayon.svg</file>
+        <file>icones/logo.svg</file>
+        <file>icones/reload.svg</file>
+        <file alias="en.qm" >translations/en.qm</file>
+    </qresource>
+</RCC>
