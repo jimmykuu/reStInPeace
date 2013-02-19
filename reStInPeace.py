@@ -132,6 +132,27 @@ class imageBrowser(QtGui.QTextBrowser):
         return ret
 
 
+def zoomEditor(self, wheelEvent):
+    # wheel to zoom in/out in editor
+    if wheelEvent.modifiers() & QtCore.Qt.ControlModifier:
+        if wheelEvent.delta() > 0:
+            self.zoomIn()
+        else:
+            self.zoomOut()
+    else:
+        self.__class__.wheelEvent(self, wheelEvent)
+
+def zoomViewer(self, wheelEvent):
+    # wheel to zoom in/out in viewer
+    if wheelEvent.modifiers() & QtCore.Qt.ControlModifier:
+        if wheelEvent.delta() > 0:
+            self.zoomIn()
+        else:
+            self.zoomOut()
+    else:
+        self.__class__.wheelEvent(self, wheelEvent)
+
+
 class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
 
     def __init__(self):
@@ -200,6 +221,11 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.esb, QtCore.SIGNAL("valueChanged(int) "), self.actualiseBSlider)
             # connexions scrollbar viewer --> synchronise view in editor 
         self.connect(self.vsb, QtCore.SIGNAL("valueChanged(int) "), self.actualiseESlider)
+
+        ## zoom event for editor and viewer
+        import types
+        self.editor.wheelEvent = types.MethodType(zoomEditor, self.editor, self.editor.__class__)
+        self.viewer.wheelEvent = types.MethodType(zoomViewer, self.viewer, self.viewer.__class__)
 
         ## MENU ACTIONS
         self.createActions()
