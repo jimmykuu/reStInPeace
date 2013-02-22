@@ -66,7 +66,7 @@ __version__ = "0.8 beta"
 __author__ = "Christophe Kibleur"
 
 # build-in modules
-import os,sys
+import os, sys
 import urllib
 import string
 import re
@@ -98,15 +98,15 @@ def readSnippetsDefs(file):
     doc = ET.parse(str(file))
     entries = doc.findall("entry")
     for entry in entries:
-        templates[entry.find("trigger").text] = (entry.find("description").text,entry.find("snippet").text)
+        templates[entry.find("trigger").text] = (entry.find("description").text, entry.find("snippet").text)
     return templates
-    
+
 
 # globals
 APPLIREP = os.getcwd()
-INREP = os.path.join(APPLIREP,"input")
-OUTREP = os.path.join(APPLIREP,"output")
-SNIPREP = os.path.join(APPLIREP,"Snippets")
+INREP = os.path.join(APPLIREP, "input")
+OUTREP = os.path.join(APPLIREP, "output")
+SNIPREP = os.path.join(APPLIREP, "Snippets")
 
 # Snippets
 DICSNIP = readSnippetsDefs(SNIPREP + "/rest_snippets.xml")
@@ -115,21 +115,42 @@ DICSNIP = readSnippetsDefs(SNIPREP + "/rest_snippets.xml")
 # images and put them inside input directory
 class imageBrowser(QtGui.QTextBrowser):
     def loadResource(self, type, name):
-        url=unicode(name.toString())
-        ret=QtCore.QVariant()
+        url = unicode(name.toString())
+        ret = QtCore.QVariant()
         if url.startswith('http://'):
             fname = url.split("/")[-1]
-            dn=os.path.expanduser(INREP)
+            dn = os.path.expanduser(INREP)
             if not os.path.isdir(dn):
                 os.mkdir(dn)
             #fn = dn + "/" + fname
-            fn=os.path.join(dn,fname)
+            fn = os.path.join(dn, fname)
             if not os.path.isfile(fn):
                 urllib.urlretrieve(url, fn)
-            ret=QtGui.QTextBrowser.loadResource(self, type, QtCore.QUrl.fromLocalFile(QtCore.QString(fn)))
+            ret = QtGui.QTextBrowser.loadResource(self, type, QtCore.QUrl.fromLocalFile(QtCore.QString(fn)))
         else:
-            ret=QtGui.QTextBrowser.loadResource(self, type, name)
+            ret = QtGui.QTextBrowser.loadResource(self, type, name)
         return ret
+
+
+def zoomEditor(self, wheelEvent):
+    # wheel to zoom in/out in editor
+    if wheelEvent.modifiers() & QtCore.Qt.ControlModifier:
+        if wheelEvent.delta() > 0:
+            self.zoomIn()
+        else:
+            self.zoomOut()
+    else:
+        self.__class__.wheelEvent(self, wheelEvent)
+
+def zoomViewer(self, wheelEvent):
+    # wheel to zoom in/out in viewer
+    if wheelEvent.modifiers() & QtCore.Qt.ControlModifier:
+        if wheelEvent.delta() > 0:
+            self.zoomIn()
+        else:
+            self.zoomOut()
+    else:
+        self.__class__.wheelEvent(self, wheelEvent)
 
 
 class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
@@ -140,7 +161,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
 
         # Configure the user interface.
         self.setupUi(self)
-        
+
         # Snippets special Variables
             # snippet
         self.insideSnippet = False
@@ -163,7 +184,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         # Browser (viewer)
             # Set permissions to open external links
             # by clicking on them
-        self.viewer.openExternalLinks=True
+        self.viewer.openExternalLinks = True
         self.viewer.setOpenExternalLinks(True)
 
             # Big Hack not to have to create a particluar
@@ -197,10 +218,14 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             # scrollbar viewer
         self.vsb = self.viewer.verticalScrollBar()
             # connexions scrollbar editor --> synchronise view in browser
-        self.connect(self.esb, QtCore.SIGNAL("sliderMoved(int) "), self.actualiseBSlider)
+        self.connect(self.esb, QtCore.SIGNAL("valueChanged(int) "), self.actualiseBSlider)
             # connexions scrollbar viewer --> synchronise view in editor 
-            # (not used for the moment, but you can)
-        #self.connect(self.vsb, QtCore.SIGNAL("sliderMoved(int) "), self.actualiseESlider)
+        self.connect(self.vsb, QtCore.SIGNAL("valueChanged(int) "), self.actualiseESlider)
+
+        ## zoom event for editor and viewer
+        import types
+        self.editor.wheelEvent = types.MethodType(zoomEditor, self.editor, self.editor.__class__)
+        self.viewer.wheelEvent = types.MethodType(zoomViewer, self.viewer, self.viewer.__class__)
 
         ## MENU ACTIONS
         self.createActions()
@@ -212,7 +237,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         self.readSettings()
 
         ## KEYBOARD SHORTCUTS
-        keyTab = QtGui.QShortcut(QtGui.QKeySequence(self.tr("Tab")),self)
+        keyTab = QtGui.QShortcut(QtGui.QKeySequence(self.tr("Tab")), self)
         self.connect(keyTab, QtCore.SIGNAL("activated()"), self.whatToDoOnTab)
 
         QtGui.QShortcut(QtGui.QKeySequence("F1"), self, self.showHelp)
@@ -221,13 +246,13 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         QtGui.QShortcut(QtGui.QKeySequence("F4"), self, self.chooseFont)
         QtGui.QShortcut(QtGui.QKeySequence("F5"), self, self.tableCreate)
         QtGui.QShortcut(QtGui.QKeySequence("F6"), self, self.columnMode)
-      
+
 
         self.connect(self.editor, QtCore.SIGNAL("textChanged()"), self.updateChilds)
-        
+
         ## STATUSBAR
         self.statusBar().showMessage("Welcome to reStInPeace, press F1 for Help.")
-       
+
     ## ------------------------------------------
     ##                  Snippets
     ## 
@@ -244,7 +269,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         selection = deb.selectedText()
         lines = unicode(selection).split()
         print lines
-        
+
         for i in lines :
             c = self.editor.textCursor()
             # on se positionne au debut
@@ -252,7 +277,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             c.insertText(i)
             c.movePosition(QtGui.QTextCursor.Left, len(i))
             self.editor.setTextCursor(c)
-            
+
         # on repositionne alors le curseur
         self.editor.setTextCursor(deb)
     def insertSnippet(self):
@@ -264,21 +289,21 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         
         If so, the snippet is added to the stack and expanded, returning True.
         """
-        # récupère le curseur et sa position
+        # rï¿½cupï¿½re le curseur et sa position
         tc = self.editor.textCursor()
         p = tc.position()
 
-        # recupère le mot le plus à gauche de celui-ci
+        # recupï¿½re le mot le plus ï¿½ gauche de celui-ci
         word = self.wordLeftExtend(tc)
 
         # position de depart du snippet
         # [Si on tape en (0,0) le mot 'link', le curseur
         # est alors en pos (4,0). Il faut alors corriger
-        # ceci en enlevant la longeur du raccourci tapé.]
+        # ceci en enlevant la longeur du raccourci tapï¿½.]
 
 
-        # On essaye de récupérer dans le dico des snippets
-        # celui qui correspond au raccourci tapé.
+        # On essaye de rï¿½cupï¿½rer dans le dico des snippets
+        # celui qui correspond au raccourci tapï¿½.
         try:
             # le mot est dans le dico
             tpl = DICSNIP[word][1]
@@ -291,8 +316,8 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
 
             self.snippet.fielditer = self.snippet.fieldIter()
             rendu = self.snippet.expanded()
-            self.snippet.long=len(rendu)
-            
+            self.snippet.long = len(rendu)
+
             #tc.beginEditBlock()
             self.editor.blockSignals(True)
             tc.insertText(rendu)
@@ -303,7 +328,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         except :
             # word is not in DICSNIP
             self.removeSelection()
-            return False    
+            return False
 
     def whatToDoOnTab(self):
         """ Slot called when 'Tab' is pressed.
@@ -324,28 +349,28 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             self.nextField()
         else : # the word entered wasn't a shortcut
             if len(self.snippets) > 0:
-                self.nextField()     
+                self.nextField()
             else:
-                self.statusBar().showMessage('insert spaces as no more snippet in stack %s'%(self.snippets)) 
+                self.statusBar().showMessage('insert spaces as no more snippet in stack %s' % (self.snippets))
                 self.editor.textCursor().insertText(" "*self.tab_long)
-                
+
     def nextField(self):
 
         try: # to go to next field
             self.field = self.snippet.fielditer.next()
             self.snippet.current_field = self.field
-            
+
             self.field.start = self.snippet.getFieldPos(self.field)
             self.field.long = self.field.getLengh()
-            self.statusBar().showMessage('Field=%s--Snippet=%s--Start=%s--Long=%s'%(self.field.code, self.snippet,self.field.start,self.field.long))
+            self.statusBar().showMessage('Field=%s--Snippet=%s--Start=%s--Long=%s' % (self.field.code, self.snippet, self.field.start, self.field.long))
             self.selectFromTo(self.snippet.start + self.field.start, self.field.long)
-        
+
             if self.field.isEnd:
                 self.endSnip()
         except :
-            self.statusBar().showMessage('ds nextField %s %s'%(self.snippet, self.snippet.current_field))
-       
-        
+            self.statusBar().showMessage('ds nextField %s %s' % (self.snippet, self.snippet.current_field))
+
+
     def endSnip(self):
         self.removeSelection()
         if len(self.snippets) < 1:
@@ -389,9 +414,9 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             c.setPosition(cursor_pos, QtGui.QTextCursor.KeepAnchor)
             if not given :
                 self.exp = c.selectedText()
-            else: 
+            else:
                 self.exp = given
-            self.statusBar().showMessage("Field %s replaced by '%s'"%(f.code,unicode(self.exp)))
+            self.statusBar().showMessage("Field %s replaced by '%s'" % (f.code, unicode(self.exp)))
 
             ## Selectionne et remplace le snippet
 
@@ -403,7 +428,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
 
             # self.snip_long est l'ancienne longueur
             offset = len(f.content) - len(old_field_val)
-            self.selectFromTo(self.snippet.start, self.snippet.long+offset)
+            self.selectFromTo(self.snippet.start, self.snippet.long + offset)
             #time.sleep(1)
 
             # on update la longueur du snippet
@@ -419,16 +444,16 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             #self.selectFromTo(self.start_snip+f.start+len(self.exp), 0)
 
             c = self.editor.textCursor()
-            c.setPosition(self.field.start + self.snippet.start+len(self.exp))
+            c.setPosition(self.field.start + self.snippet.start + len(self.exp))
             self.editor.setTextCursor(c)
-            
+
     ## ------------------------------------------
     ## Editor's functions
     ## ------------------------------------------
     # Find the word before the cursor and select it
     def wordLeftExtend(self, my_cursor):
-        """ Recupère le mot le plus à gauche
-            d'un curseur donné et le sélectionne.
+        """ Recupï¿½re le mot le plus ï¿½ gauche
+            d'un curseur donnï¿½ et le sï¿½lectionne.
         """
         oldpos = my_cursor.position()
 
@@ -445,9 +470,9 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
 
     def showCursorPos(self):
         tc = self.editor.textCursor()
-        self.statusBar().showMessage( "Position: %s" %(tc.position()) )
+        self.statusBar().showMessage("Position: %s" % (tc.position()))
 
-    # selectionne le texte de pos à pos + nbr_car
+    # selectionne le texte de pos ï¿½ pos + nbr_car
     def selectFromTo(self, pos, nbr_car) :
         """ Selectionne la partie de texte comprise
             entre pos et pos + nbr_car
@@ -456,44 +481,56 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         c = self.editor.textCursor()
         # on se positionne au debut
         c.setPosition(pos)
-        # on va vers la droite de nbr_car caractères
-        c.movePosition(QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor,nbr_car)
+        # on va vers la droite de nbr_car caractï¿½res
+        c.movePosition(QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor, nbr_car)
         # on repositionne alors le curseur
         self.editor.setTextCursor(c)
 
     # enleve toute selection
     def removeSelection(self):
         """ Enleve la selection et deplace le
-            curseur à la fin de celle-ci.
+            curseur ï¿½ la fin de celle-ci.
         """
         p = self.editor.textCursor().position()
-        self.selectFromTo(p,0)
+        self.selectFromTo(p, 0)
 
     ## ------------------------------------------
-    ## Nombre de caractères maximum sur une ligne
+    ## Nombre de caractï¿½res maximum sur une ligne
     ## ------------------------------------------
-    def setTabEditorWidth(self,tw):
+    def setTabEditorWidth(self, tw):
         e = self.editor
-        e.setTabStopWidth( e.fontMetrics().width( "x" ) * tw )
+        e.setTabStopWidth(e.fontMetrics().width("x") * tw)
 
     ## Sliders verticaux
-    def actualiseBSlider(self, val):
+    def actualiseBSlider(self, val_ed):
         # Essaye d'actualiser le scrolling du Browser
-        # de façon proportionnelle à celui de l'
-        # éditeur.
+        # de faï¿½on proportionnelle ï¿½ celui de l'
+        # ï¿½diteur.
         #
         # val est la valeur du slider de l'editeur
-        k = self.esb.sliderPosition()
-        max_ed = self.vsb.maximum()
-        max_view = self.esb.maximum()
+        val_view = self.vsb.sliderPosition()
 
-        proportion = float(k)/float(max_view)*float(max_ed)
-        self.vsb.setSliderPosition(proportion)
+        max_ed = self.esb.maximum()
+        max_view = self.vsb.maximum()
 
-    def actualiseESlider(self, val):
-        # Not used for the moment
-        self.esb.setSliderPosition(val)
-        
+        prop_ed = float(val_ed) / float(max_ed)
+        prop_view = float(val_view) / float(max_view)
+
+        if not (prop_ed - 0.01 <= prop_view <= prop_ed + 0.01):
+            self.vsb.setSliderPosition(prop_ed * max_view)
+
+    def actualiseESlider(self, val_view):
+        val_ed = self.esb.sliderPosition()
+
+        max_ed = self.esb.maximum()
+        max_view = self.vsb.maximum()
+
+        prop_ed = float(val_ed) / float(max_ed)
+        prop_view = float(val_view) / float(max_view)
+
+        if not (prop_view - 0.01 <= prop_ed <= prop_view + 0.01):
+            self.esb.setSliderPosition(prop_view * max_ed)
+
     def newFile(self, path=""):
         """ Create a new reSTructuredText file UTF-8 encoded
         """
@@ -516,7 +553,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         fileName = QtCore.QString(path)
 
         if fileName.isEmpty():
-            fileName = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open the file"), self.default_dir,                                                       "reST Files (*.rst *.txt )")
+            fileName = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open the file"), self.default_dir, "reST Files (*.rst *.txt )")
         codec = QtCore.QTextCodec.codecForName("UTF-8")
         if not fileName.isEmpty():
             # le nom du fichier brut
@@ -524,7 +561,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             self.filePath = str(QtCore.QFileInfo(fileName).path())
             self.editor.clear()
             # update de la statusbar
-            self.statusBar().showMessage('File %s has been loaded correctly.' %(self.fileName))
+            self.statusBar().showMessage('File %s has been loaded correctly.' % (self.fileName))
 
             inFile = QtCore.QFile(fileName)
             #print inFile.fileName()
@@ -543,7 +580,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         """ Save actual file in default dir
         """
 
-        fileName = QtGui.QFileDialog.getSaveFileName(self,self.tr("Save the file as..."),           self.filePath,"reST Files (*.rst *.txt )")
+        fileName = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save the file as..."), self.filePath, "reST Files (*.rst *.txt )")
         if not fileName.isEmpty():
             outFile = QtCore.QFile(fileName)
             if not outFile.open(QtCore.QFile.WriteOnly):
@@ -555,12 +592,12 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             # update de self.filename :
             self.fileName = QtCore.QFileInfo(outFile).fileName()
             # update de la statusbar
-            self.statusBar().showMessage('File %s has been saved correctly.' %(self.fileName))
+            self.statusBar().showMessage('File %s has been saved correctly.' % (self.fileName))
 
             # flag de sauvegarde
             self.isSaved = True
             self.actionSave.setEnabled(self.isSaved)
-            
+
     # Why reinvent the wheel ? It has been taken and adapted from M.Summerfield's demo
     def saveFile(self):
         fp = self.filePath + '/'
@@ -570,21 +607,21 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         if QtCore.QFile.exists(self.fileName):
             backup = self.fileName + '.rst_old'
             ok = True
-            if QtCore.QFile.exists(fp+backup):
-                ok = QtCore.QFile.remove(fp+backup)
+            if QtCore.QFile.exists(fp + backup):
+                ok = QtCore.QFile.remove(fp + backup)
                 if not ok:
                     QtGui.QMessageBox.information(self, "reSTinPeace - Save Warning",
                             "Failed to remove the old backup %s")
             if ok:
                 # Must use copy rather than rename to preserve file
                 # permissions; could use rename on Windows though
-                if not QtCore.QFile.copy(fp+self.fileName, fp+backup):
+                if not QtCore.QFile.copy(fp + self.fileName, fp + backup):
                     QtGui.QMessageBox.information(self, "reSTinPeace - Save Warning",
                             "Failed to save a backup %s")
 
         try:
             try:
-                fh = QtCore.QFile(fp+self.fileName)
+                fh = QtCore.QFile(fp + self.fileName)
                 if not fh.open(QtCore.QIODevice.WriteOnly):
                     raise IOError, unicode(fh.errorString())
                 stream = QtCore.QTextStream(fh)
@@ -593,13 +630,13 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
                 self.editor.document().setModified(False)
                 self.setWindowModified(False)
                 self.setWindowTitle("reSTinPeace - %s[*]" % \
-                        QtCore.QFileInfo(fp+self.fileName).fileName())
+                        QtCore.QFileInfo(fp + self.fileName).fileName())
                 self.statusBar().showMessage("Saved %s" % self.fileName,
                         5000)
                 self.isSaved = True
             except (IOError, OSError), e:
                 QtGui.QMessageBox.warning(self, "reSTinPeace - Save Error",
-                        "Failed to save %s: %s" % (fp+self.fileName, e))
+                        "Failed to save %s: %s" % (fp + self.fileName, e))
         finally:
             if fh is not None:
                 fh.close()
@@ -609,7 +646,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         """ Transforme le texte de l'editeur en HTML
             pour le voir dans la partie browser.
         """
-        self.viewer.document().setDefaultStyleSheet(open(os.getcwd() + "/browser.css","r").read())
+        self.viewer.document().setDefaultStyleSheet(open(os.getcwd() + "/browser.css", "r").read())
         sortie = core.publish_string(unicode(self.editor.document().toPlainText()).encode("utf-8"),
                 writer_name='html',
                 settings_overrides={'input_encoding': 'utf-8',
@@ -627,13 +664,13 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         self.connect(self.converterdial.but_process, QtCore.SIGNAL("clicked()"), self.processOutput)
 
     def processOutput(self):
-        """ Transforme l'entree au format demandé
+        """ Transforme l'entree au format demandï¿½
         """
 
-        dic_formats = {'(X)HTML': ('to_html','css'),
-                        'LaTeX' : ('to_tex','sty'),
-                        'OpenOffice' : ('to_odt','odt'),
-                        'Lout' : ('to_lout','lout'),
+        dic_formats = {'(X)HTML': ('to_html', 'css'),
+                        'LaTeX' : ('to_tex', 'sty'),
+                        'OpenOffice' : ('to_odt', 'odt'),
+                        'Lout' : ('to_lout', 'lout'),
                         }
         dial = self.converterdial
         format = dic_formats[str(dial.combo_out.currentText())][0]
@@ -646,37 +683,37 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         extension = "." + format[3:]
         format += ".py"
 
-        cmd = string.Template('python ${to_format} %s --stylesheet-path=${stylesheet} --language=en "${restfile}" "${outfile}"'%(opt))
+        cmd = string.Template('python ${to_format} %s --stylesheet-path=${stylesheet} --language=en "${restfile}" "${outfile}"' % (opt))
 
 
-        out_file= OUTREP + "/" + self.fileName[:-4] + extension
+        out_file = OUTREP + "/" + self.fileName[:-4] + extension
 
-        # raccourci pour la commande lancée
+        # raccourci pour la commande lancï¿½e
         text_cmd = cmd.substitute(to_format=format,
-                                  stylesheet= Tstylesheet,
-                                  restfile= self.filePath + "/" + self.fileName,
-                                  outfile= out_file)
+                                  stylesheet=Tstylesheet,
+                                  restfile=self.filePath + "/" + self.fileName,
+                                  outfile=out_file)
 
         if format == 'to_lout.py' :
-            cmd = string.Template('python ${to_format} %s --language=fr "${restfile}" "${outfile}"'%(opt))
+            cmd = string.Template('python ${to_format} %s --language=fr "${restfile}" "${outfile}"' % (opt))
             text_cmd = cmd.substitute(to_format=format,
-                                  restfile= self.filePath + "/" + self.fileName,
-                                  outfile= out_file)
+                                  restfile=self.filePath + "/" + self.fileName,
+                                  outfile=out_file)
         # debbuging :
         print text_cmd
 
-        # lance la commande système
+        # lance la commande systï¿½me
         try:
             os.popen2(text_cmd)
-            self.statusBar().showMessage('Command :  "%s"' %(text_cmd))
+            self.statusBar().showMessage('Command :  "%s"' % (text_cmd))
         except:
             self.statusBar().showMessage('Command failed')
 
         # update de la statusbar
-        self.statusBar().showMessage('Command :  "%s"' %(text_cmd))
+        self.statusBar().showMessage('Command :  "%s"' % (text_cmd))
 
         # Ouvre t-on le document le document dans
-        # le navigateur par défaut ?
+        # le navigateur par dï¿½faut ?
         # self.askIfShowInDefaultBrowser(html_file)
 
     def showInWB(self):
@@ -696,8 +733,8 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         message.exec_()
 
     def askIfShowInDefaultBrowser(self, name):
-        """ Demande à l'utilisateur s'il veut visualiser
-            la sortie dans son navigateur par défaut.
+        """ Demande ï¿½ l'utilisateur s'il veut visualiser
+            la sortie dans son navigateur par dï¿½faut.
         """
         reply = QtGui.QMessageBox.question(self, 'Message',
             "Do you want to view your document in your default browser ?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
@@ -725,7 +762,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         self.actionSave.setEnabled(True)
         self.actionSaveAs.setEnabled(True)
         self.setWindowTitle("reSTinPeace %s -- File :%s* -- Directory: %s " \
-                            %(__version__,
+                            % (__version__,
                             self.fileName,
                             self.filePath,
                             ))
@@ -765,7 +802,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         settings.setValue("pos", QtCore.QVariant(self.pos()))
         settings.setValue("size", QtCore.QVariant(self.size()))
 
-    def afficheMessage(self,mess):
+    def afficheMessage(self, mess):
         self.statusBar().showMessage(mess)
 
     def createActions(self):
@@ -776,7 +813,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         QtCore.QObject.connect(self.actionOpen,
             QtCore.SIGNAL("triggered()"),
             self.openFile)
-            
+
         # Nouveau fichier
         self.actionNew.setShortcut(self.tr("Ctrl+N"))
         QtCore.QObject.connect(self.actionNew,
@@ -788,7 +825,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         QtCore.QObject.connect(self.actionSaveAs,
             QtCore.SIGNAL("triggered()"),
             self.saveFileAs)
-            
+
         # Enregistrer sous fichier
         self.actionSave.setShortcut(self.tr("Ctrl+S"))
         QtCore.QObject.connect(self.actionSave,
@@ -801,7 +838,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             QtCore.SIGNAL("triggered()"),
             self.toBrowser)
 
-        # Dialogue de préférences
+        # Dialogue de prï¿½fï¿½rences
         self.actionSettings.setShortcut(self.tr("Ctrl+Alt+P"))
         QtCore.QObject.connect(self.actionSettings,
             QtCore.SIGNAL("triggered()"),
@@ -811,7 +848,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         QtCore.QObject.connect(self.actionAbout,
             QtCore.SIGNAL("triggered()"),
             self.showAbout)
-            
+
         # Dialogue a propos
         QtCore.QObject.connect(self.actionHelp,
             QtCore.SIGNAL("triggered()"),
@@ -834,12 +871,12 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         QtCore.QObject.connect(self.actionQuit,
             QtCore.SIGNAL("triggered()"),
             QtGui.qApp, QtCore.SLOT('quit()'))
-            
+
     def chooseFont(self):
         font, ok = QtGui.QFontDialog.getFont(self.editor.font())
         if ok:
             self.editor.setFont(font)
-                 
+
 
     # Internationalisation taken from PyQt4 demo
     def findQmFiles(self):
@@ -859,18 +896,18 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         QtGui.qApp.installTranslator(translator)
         translator.translate("MonAppli", "en_US")
         return
-        
+
     def showHelp(self):
         """Shows a Help dialog that can be closed by 'Esc' key.
         """
         h = HelpForm(parent=self)
         h.show()
-        
-  
-    def addEditorMethod(self,methodname):
+
+
+    def addEditorMethod(self, methodname):
         #self.editor.methodname = methodname
-        setattr(self.editor,method.__name__,method)
-        
+        setattr(self.editor, method.__name__, method)
+
     ## This part of code has been taken and adapted 
     ## from Sanbox thanks to Mark Summerfield for the GPL 2.0 licence.
 
@@ -903,7 +940,7 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
                 break
         userCursor.endEditBlock()
 
-       
+
     def tableCreate(self):
         """ This function creates a QTableWidgetItem out of a 2-dimension nested list which contains numbers, and then uses it to "paint" the someTbl object, which is a QTableWidget """
         dial = QtGui.QDialog(self)
@@ -911,41 +948,41 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
         self.tabledialog = dial
         self.tbl_dial = Ui_ArrayDialog()
         self.tbl_dial.setupUi(dial)
-        
-        
+
+
         #ArrayDialog.show()
         tbl = self.tbl_dial.tableWidget
         col = self.tbl_dial.spinBoxColumns
         lin = self.tbl_dial.spinBoxRows
         but = self.tbl_dial.okButton
-        
+
         # Connexions
         self.connect(col, QtCore.SIGNAL("valueChanged(int)"), self.actualiseTable)
         self.connect(lin, QtCore.SIGNAL("valueChanged(int)"), self.actualiseTable)
         #dial.connect(but, QtCore.SIGNAL("cliked()"), self.insertRestTable)
-        QtCore.QObject.connect(but,QtCore.SIGNAL("clicked()"),self.insertRestTable)
+        QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), self.insertRestTable)
         tbl.setColumnCount(col.value())
         tbl.setRowCount(lin.value())
-        
+
         dial.show()
-        
+
     def actualiseTable(self, int_number):
         tbl = self.tbl_dial.tableWidget
         col = self.tbl_dial.spinBoxColumns
         lin = self.tbl_dial.spinBoxRows
-        
+
         tbl.setColumnCount(col.value())
         tbl.setRowCount(lin.value())
-        
+
     def insertRestTable(self):
         lines = self.tbl_dial.tableWidget.rowCount()
         cols = self.tbl_dial.tableWidget.columnCount()
         mylist = []
         for col in range(cols) :
-            poorlist=[]
+            poorlist = []
             for line in range(lines) :
                 try :
-                    text = self.tbl_dial.tableWidget.item(line,col).text()
+                    text = self.tbl_dial.tableWidget.item(line, col).text()
                 except:
                     text = ''
                 truc = unicode(text)
@@ -953,35 +990,35 @@ class MonAppli(QtGui.QMainWindow, Ui_MainWindow):
             mylist.append(poorlist)
         self.traiteListe(mylist)
         self.tabledialog.close()
-        
+
     def traiteListe(self, laliste):
         # see new changes in Python 2.5 max function
         # http://www.onlamp.com/pub/a/python/2006/10/26/python-25.html?page=3
         output = []
-        
+
         def myord(astr):
             return len(astr)
-            
+
         nbr_lines = len(laliste[0])
         for lin in range(nbr_lines):
-            textcell,deco = [],[]
-            
+            textcell, deco = [], []
+
             for col in laliste:
                 largeur = len(max(col, key=myord))
                 spaces = largeur - len(col[lin])
                 if lin == 1:
-                    deco.append('+' + (largeur+2)*'=')
+                    deco.append('+' + (largeur + 2) * '=')
                 else:
-                    deco.append('+' + (largeur+2)*'-')
-                textcell.append( "| " + col[lin] + (spaces+1)*" " )
-            deco.append( "+" )
-            textcell.append( "|" )
+                    deco.append('+' + (largeur + 2) * '-')
+                textcell.append("| " + col[lin] + (spaces + 1) * " ")
+            deco.append("+")
+            textcell.append("|")
             #print "".join(deco)
             #print "".join(koala)
             output.append("".join(deco))
             output.append("".join(textcell))
         output.append(output[0])
-        
+
         c = self.editor.textCursor()
         c.insertText("\n".join(output))
         self.toBrowser()
@@ -994,8 +1031,8 @@ class HelpForm(QtGui.QDialog):
         #self.setAttribute(Qt.WA_DeleteOnClose)
         browser = QtGui.QTextBrowser()
         browser.setOpenExternalLinks(True)
-        browser.document().setDefaultStyleSheet(open(os.getcwd() + "/browser.css","r").read())
-        myhelp = open(APPLIREP+ "/input/rip_help.rst",'r').read()
+        browser.document().setDefaultStyleSheet(open(os.getcwd() + "/browser.css", "r").read())
+        myhelp = open(APPLIREP + "/input/rip_help.rst", 'r').read()
         sortie = core.publish_string(myhelp,
                 writer_name='html',
                 settings_overrides={'input_encoding': 'utf-8',
@@ -1005,7 +1042,7 @@ class HelpForm(QtGui.QDialog):
                             )
         #browser.setSearchPaths([os.path.expanduser(self.filePath)])
         browser.setHtml(self.tr(sortie))
-        
+
         layout = QtGui.QVBoxLayout()
         layout.setMargin(0)
         layout.addWidget(browser)
@@ -1020,7 +1057,7 @@ def main():
     QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("Cleanlooks"))
     ## et la palette correspondante
     QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
-    
+
     ## Translation process
     locale = QtCore.QLocale.system().name()
     qtTranslator = QtCore.QTranslator()
@@ -1029,11 +1066,11 @@ def main():
     appTranslator = QtCore.QTranslator()
     if appTranslator.load("reStInPeace_" + locale):
         app.installTranslator(appTranslator)
-  
+
     window = MonAppli()
     window.show()
     sys.exit(app.exec_())
 
 if __name__ == "__main__":
     main()
-    
+
