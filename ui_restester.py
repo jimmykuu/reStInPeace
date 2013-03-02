@@ -2,205 +2,197 @@
 
 # Form implementation generated from reading ui file 'ui_restester.ui'
 #
-# Created: Sat Oct 20 21:43:31 2007
-#      by: PyQt4 UI code generator 4.3
+# Created: Thu Jan 17 19:33:15 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(QtCore.QSize(QtCore.QRect(0,0,792,645).size()).expandedTo(MainWindow.minimumSizeHint()))
-        MainWindow.setWindowIcon(QtGui.QIcon(":/new/prefix1/icones/crayon.svg"))
-
+        MainWindow.setObjectName(_fromUtf8("MainWindow"))
+        MainWindow.resize(792, 645)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/crayon.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-
+        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.hboxlayout = QtGui.QHBoxLayout(self.centralwidget)
-        self.hboxlayout.setObjectName("hboxlayout")
-
+        self.hboxlayout.setObjectName(_fromUtf8("hboxlayout"))
         self.splitter = QtGui.QSplitter(self.centralwidget)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
-        self.splitter.setObjectName("splitter")
-
-        self.widget = QtGui.QWidget(self.splitter)
-        self.widget.setObjectName("widget")
-
-        self.vboxlayout = QtGui.QVBoxLayout(self.widget)
-        self.vboxlayout.setObjectName("vboxlayout")
-
-        self.label = QtGui.QLabel(self.widget)
-
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Preferred)
+        self.splitter.setObjectName(_fromUtf8("splitter"))
+        self.layoutWidget = QtGui.QWidget(self.splitter)
+        self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
+        self.vboxlayout = QtGui.QVBoxLayout(self.layoutWidget)
+        self.vboxlayout.setMargin(0)
+        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
+        self.label = QtGui.QLabel(self.layoutWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
-
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
+        self.label.setObjectName(_fromUtf8("label"))
         self.vboxlayout.addWidget(self.label)
-
-        self.editor = QtGui.QTextEdit(self.widget)
-
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Expanding)
+        self.editor = QtGui.QTextEdit(self.layoutWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.editor.sizePolicy().hasHeightForWidth())
         self.editor.setSizePolicy(sizePolicy)
-
         palette = QtGui.QPalette()
-
-        brush = QtGui.QBrush(QtGui.QColor(255,255,255))
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active,QtGui.QPalette.Text,brush)
-
-        brush = QtGui.QBrush(QtGui.QColor(0,0,0))
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active,QtGui.QPalette.Base,brush)
-
-        brush = QtGui.QBrush(QtGui.QColor(255,255,255))
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive,QtGui.QPalette.Text,brush)
-
-        brush = QtGui.QBrush(QtGui.QColor(0,0,0))
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive,QtGui.QPalette.Base,brush)
-
-        brush = QtGui.QBrush(QtGui.QColor(113,113,113))
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(113, 113, 113))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled,QtGui.QPalette.Text,brush)
-
-        brush = QtGui.QBrush(QtGui.QColor(226,226,226))
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(226, 226, 226))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled,QtGui.QPalette.Base,brush)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.editor.setPalette(palette)
-
         font = QtGui.QFont()
-        font.setFamily("DejaVu Sans Mono")
+        font.setFamily(_fromUtf8("DejaVu Sans Mono"))
         font.setPointSize(11)
         self.editor.setFont(font)
         self.editor.setAcceptRichText(False)
-        self.editor.setObjectName("editor")
+        self.editor.setObjectName(_fromUtf8("editor"))
         self.vboxlayout.addWidget(self.editor)
-
-        self.widget1 = QtGui.QWidget(self.splitter)
-        self.widget1.setObjectName("widget1")
-
-        self.vboxlayout1 = QtGui.QVBoxLayout(self.widget1)
-        self.vboxlayout1.setObjectName("vboxlayout1")
-
-        self.label_2 = QtGui.QLabel(self.widget1)
-
+        self.layoutWidget1 = QtGui.QWidget(self.splitter)
+        self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
+        self.vboxlayout1 = QtGui.QVBoxLayout(self.layoutWidget1)
+        self.vboxlayout1.setMargin(0)
+        self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
+        self.label_2 = QtGui.QLabel(self.layoutWidget1)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_2.setFont(font)
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
+        self.label_2.setObjectName(_fromUtf8("label_2"))
         self.vboxlayout1.addWidget(self.label_2)
-
-        self.viewer = QtGui.QTextBrowser(self.widget1)
-
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Expanding)
+        self.viewer = QtGui.QTextBrowser(self.layoutWidget1)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.viewer.sizePolicy().hasHeightForWidth())
         self.viewer.setSizePolicy(sizePolicy)
-
         font = QtGui.QFont()
-        font.setFamily("DejaVu Sans Mono")
+        font.setFamily(_fromUtf8("DejaVu Sans Mono"))
         font.setPointSize(11)
         self.viewer.setFont(font)
-        self.viewer.setObjectName("viewer")
+        self.viewer.setToolTip(_fromUtf8(""))
+        self.viewer.setObjectName(_fromUtf8("viewer"))
         self.vboxlayout1.addWidget(self.viewer)
         self.hboxlayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
-
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0,0,792,27))
-        self.menubar.setObjectName("menubar")
-
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 792, 22))
+        self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFichier = QtGui.QMenu(self.menubar)
-        self.menuFichier.setObjectName("menuFichier")
-
+        self.menuFichier.setObjectName(_fromUtf8("menuFichier"))
         self.menuAbout = QtGui.QMenu(self.menubar)
-        self.menuAbout.setObjectName("menuAbout")
-
+        self.menuAbout.setObjectName(_fromUtf8("menuAbout"))
         self.menuTransform = QtGui.QMenu(self.menubar)
-        self.menuTransform.setObjectName("menuTransform")
-
-        self.menuLangages = QtGui.QMenu(self.menubar)
-        self.menuLangages.setObjectName("menuLangages")
+        self.menuTransform.setObjectName(_fromUtf8("menuTransform"))
         MainWindow.setMenuBar(self.menubar)
-
         self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
+        self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
-
         self.toolBar = QtGui.QToolBar(MainWindow)
-        self.toolBar.setObjectName("toolBar")
-        MainWindow.addToolBar(self.toolBar)
-
+        self.toolBar.setObjectName(_fromUtf8("toolBar"))
+        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionNew = QtGui.QAction(MainWindow)
-        self.actionNew.setIcon(QtGui.QIcon(":/new/prefix1/icones/Nouveau.svg"))
-        self.actionNew.setObjectName("actionNew")
-
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Nouveau.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionNew.setIcon(icon1)
+        self.actionNew.setObjectName(_fromUtf8("actionNew"))
         self.actionOpen = QtGui.QAction(MainWindow)
-        self.actionOpen.setIcon(QtGui.QIcon(":/new/prefix1/icones/Ouvrir.svg"))
-        self.actionOpen.setObjectName("actionOpen")
-
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Ouvrir.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionOpen.setIcon(icon2)
+        self.actionOpen.setObjectName(_fromUtf8("actionOpen"))
         self.actionSave = QtGui.QAction(MainWindow)
-        self.actionSave.setIcon(QtGui.QIcon(":/new/prefix1/icones/Enregistrer.svg"))
-        self.actionSave.setObjectName("actionSave")
-
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Enregistrer.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSave.setIcon(icon3)
+        self.actionSave.setObjectName(_fromUtf8("actionSave"))
         self.actionQuit = QtGui.QAction(MainWindow)
-        self.actionQuit.setIcon(QtGui.QIcon(":/new/prefix1/icones/Quitter.svg"))
-        self.actionQuit.setObjectName("actionQuit")
-
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Quitter.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionQuit.setIcon(icon4)
+        self.actionQuit.setObjectName(_fromUtf8("actionQuit"))
         self.actionAbout = QtGui.QAction(MainWindow)
-        self.actionAbout.setIcon(QtGui.QIcon(":/new/prefix1/icones/APropos.svg"))
-        self.actionAbout.setObjectName("actionAbout")
-
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/APropos.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionAbout.setIcon(icon5)
+        self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
         self.actionHTML = QtGui.QAction(MainWindow)
-        self.actionHTML.setObjectName("actionHTML")
-
+        self.actionHTML.setObjectName(_fromUtf8("actionHTML"))
         self.actionLaTeX = QtGui.QAction(MainWindow)
-        self.actionLaTeX.setObjectName("actionLaTeX")
-
+        self.actionLaTeX.setObjectName(_fromUtf8("actionLaTeX"))
         self.actionConversionDialog = QtGui.QAction(MainWindow)
-        self.actionConversionDialog.setIcon(QtGui.QIcon(":/new/prefix1/icones/ConversionDialog.svg"))
-        self.actionConversionDialog.setObjectName("actionConversionDialog")
-
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/ConversionDialog.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionConversionDialog.setIcon(icon6)
+        self.actionConversionDialog.setObjectName(_fromUtf8("actionConversionDialog"))
         self.actionSettings = QtGui.QAction(MainWindow)
-        self.actionSettings.setIcon(QtGui.QIcon(":/new/prefix1/icones/Settings.svg"))
-        self.actionSettings.setObjectName("actionSettings")
-
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Settings.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSettings.setIcon(icon7)
+        self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
         self.actionRefresh = QtGui.QAction(MainWindow)
-        self.actionRefresh.setIcon(QtGui.QIcon(":/new/prefix1/icones/reload.svg"))
-        self.actionRefresh.setObjectName("actionRefresh")
-
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/reload.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionRefresh.setIcon(icon8)
+        self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
         self.actionSeeInDefaultBrowser = QtGui.QAction(MainWindow)
-        self.actionSeeInDefaultBrowser.setIcon(QtGui.QIcon(":/new/prefix1/icones/Navigateur.svg"))
-        self.actionSeeInDefaultBrowser.setObjectName("actionSeeInDefaultBrowser")
-
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Navigateur.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSeeInDefaultBrowser.setIcon(icon9)
+        self.actionSeeInDefaultBrowser.setObjectName(_fromUtf8("actionSeeInDefaultBrowser"))
         self.actionEnglish = QtGui.QAction(MainWindow)
-        self.actionEnglish.setObjectName("actionEnglish")
-
+        self.actionEnglish.setObjectName(_fromUtf8("actionEnglish"))
         self.actionFrench = QtGui.QAction(MainWindow)
-        self.actionFrench.setObjectName("actionFrench")
-
+        self.actionFrench.setObjectName(_fromUtf8("actionFrench"))
         self.actionSaveAs = QtGui.QAction(MainWindow)
-        self.actionSaveAs.setIcon(QtGui.QIcon(":/new/prefix1/icones/Enregistrer_Sous.svg"))
-        self.actionSaveAs.setObjectName("actionSaveAs")
-
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Enregistrer_Sous.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSaveAs.setIcon(icon10)
+        self.actionSaveAs.setObjectName(_fromUtf8("actionSaveAs"))
         self.actionHelp = QtGui.QAction(MainWindow)
-        self.actionHelp.setIcon(QtGui.QIcon(":/new/prefix1/icones/Help.svg"))
-        self.actionHelp.setObjectName("actionHelp")
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/new/prefix1/icones/Help.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionHelp.setIcon(icon11)
+        self.actionHelp.setObjectName(_fromUtf8("actionHelp"))
         self.menuFichier.addAction(self.actionOpen)
         self.menuFichier.addAction(self.actionSave)
         self.menuFichier.addAction(self.actionNew)
@@ -213,11 +205,8 @@ class Ui_MainWindow(object):
         self.menuTransform.addAction(self.actionSettings)
         self.menuTransform.addAction(self.actionRefresh)
         self.menuTransform.addAction(self.actionSeeInDefaultBrowser)
-        self.menuLangages.addAction(self.actionEnglish)
-        self.menuLangages.addAction(self.actionFrench)
         self.menubar.addAction(self.menuFichier.menuAction())
         self.menubar.addAction(self.menuTransform.menuAction())
-        self.menubar.addAction(self.menuLangages.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
         self.toolBar.addAction(self.actionOpen)
         self.toolBar.addAction(self.actionNew)
@@ -238,42 +227,31 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "reSTinPeace", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Editor View", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Browser View", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFichier.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuTransform.setTitle(QtGui.QApplication.translate("MainWindow", "Actions", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuLangages.setTitle(QtGui.QApplication.translate("MainWindow", "Langages", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolBar.setWindowTitle(QtGui.QApplication.translate("MainWindow", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNew.setText(QtGui.QApplication.translate("MainWindow", "New", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Open", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSave.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHTML.setText(QtGui.QApplication.translate("MainWindow", "HTML", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionLaTeX.setText(QtGui.QApplication.translate("MainWindow", "LaTeX", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionConversionDialog.setText(QtGui.QApplication.translate("MainWindow", "Conversion dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionConversionDialog.setIconText(QtGui.QApplication.translate("MainWindow", "Conversion Dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionConversionDialog.setToolTip(QtGui.QApplication.translate("MainWindow", "Conversion Dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionRefresh.setText(QtGui.QApplication.translate("MainWindow", "Refresh browser view", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionRefresh.setIconText(QtGui.QApplication.translate("MainWindow", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionRefresh.setToolTip(QtGui.QApplication.translate("MainWindow", "Refresh the browser view", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSeeInDefaultBrowser.setText(QtGui.QApplication.translate("MainWindow", "See in my default browser", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionEnglish.setText(QtGui.QApplication.translate("MainWindow", "English", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionFrench.setText(QtGui.QApplication.translate("MainWindow", "French", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSaveAs.setText(QtGui.QApplication.translate("MainWindow", "SaveAs", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(_translate("MainWindow", "reSTinPeace", None))
+        self.label.setText(_translate("MainWindow", "Editor View", None))
+        self.label_2.setText(_translate("MainWindow", "Browser View", None))
+        self.menuFichier.setTitle(_translate("MainWindow", "File", None))
+        self.menuAbout.setTitle(_translate("MainWindow", "About", None))
+        self.menuTransform.setTitle(_translate("MainWindow", "Actions", None))
+        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar", None))
+        self.actionNew.setText(_translate("MainWindow", "New", None))
+        self.actionOpen.setText(_translate("MainWindow", "Open", None))
+        self.actionSave.setText(_translate("MainWindow", "Save", None))
+        self.actionQuit.setText(_translate("MainWindow", "Quit", None))
+        self.actionAbout.setText(_translate("MainWindow", "About", None))
+        self.actionHTML.setText(_translate("MainWindow", "HTML", None))
+        self.actionLaTeX.setText(_translate("MainWindow", "LaTeX", None))
+        self.actionConversionDialog.setText(_translate("MainWindow", "Conversion dialog", None))
+        self.actionConversionDialog.setIconText(_translate("MainWindow", "Conversion Dialog", None))
+        self.actionConversionDialog.setToolTip(_translate("MainWindow", "Conversion Dialog", None))
+        self.actionSettings.setText(_translate("MainWindow", "Settings", None))
+        self.actionRefresh.setText(_translate("MainWindow", "Refresh browser view", None))
+        self.actionRefresh.setIconText(_translate("MainWindow", "Refresh", None))
+        self.actionRefresh.setToolTip(_translate("MainWindow", "Refresh the browser view", None))
+        self.actionSeeInDefaultBrowser.setText(_translate("MainWindow", "See in my default browser", None))
+        self.actionEnglish.setText(_translate("MainWindow", "English", None))
+        self.actionFrench.setText(_translate("MainWindow", "French", None))
+        self.actionSaveAs.setText(_translate("MainWindow", "SaveAs", None))
+        self.actionHelp.setText(_translate("MainWindow", "Help", None))
 
 import ressources_rc
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    MainWindow = QtGui.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

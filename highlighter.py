@@ -62,15 +62,15 @@ class Highlighter(QtGui.QSyntaxHighlighter):
         tables =  "(\|.*\|)|((\+(\-|\+|\=)+)\+)"
 
         self.addRule(indented_block, QtGui.QColor('#aea148')) # vert
-        self.addRule(bullet_list, 'yellowgreen') #
+        self.addRule(bullet_list, '#175902') #
         self.addRule(directives, QtGui.QColor('#9B703F')) # marron
-        self.addRule(fieldlist, QtGui.QColor('#D09C10')) # marron-jaune
+        self.addRule(fieldlist, QtGui.QColor('#3049FF')) # marron-jaune
         self.addRule(hyperlink, QtGui.QColor(207,106,76)) # brique
         self.addRule(hyperlink_target, QtGui.QColor(207,106,76)) # brique
         self.addRule(deco, QtGui.QColor('#BF2F2F')) # rouge
         self.addRule(bold, QtGui.QColor('#FF6666')) # bleu
         self.addRule(italic, QtGui.QColor('#FF0000')) # bleu
-        self.addRule(links, QtGui.QColor('#FFE04F')) # jaune
+        self.addRule(links, QtGui.QColor('#523B08')) # jaune
         self.addRule(litt_string, QtGui.QColor('#0078A4')) # bleu marine
         self.addRule(snip, QtGui.QColor('#99CCFF')) # bleu clair
         self.addRule(tables, QtGui.QColor('#3b77bf')) # bleu clair

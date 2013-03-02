@@ -1,5 +1,4 @@
 import re
-import psyco
 
 """
 A snippet engine for QTextEdit.

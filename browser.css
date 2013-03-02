@@ -26,7 +26,7 @@ div h1 {
 }
 
 div h1.title {
-    font-size: 150%;
+    font-size: 200%;
     color: #AF1515;
     text-align: center; /* Does not work */
     margin-left: 50px; /* Obliged to this ? */
